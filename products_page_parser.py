@@ -1,11 +1,11 @@
 import re
-
+import sys
 import requests
 from bs4 import BeautifulSoup
 
 from database_connection import create_category, create_or_update_product
 
-base_url = 'https://www.komputronik.pl/category'
+base_url = 'https://www.komputronik.pl/'
 menu_url = 'https://www.komputronik.pl/frontend-api/category/menu'
 
 params = {
@@ -51,19 +51,14 @@ def parse_page(url, url_params, category_id):
         create_or_update_product(result['name'], result['price'], category_id)
 
 
-def get_category(category_url, category_id, category_name):
-    request_url = base_url + category_url
+def get_category(category):
+    request_url = base_url + category.url
     page = requests.get(request_url, params)
-    create_category(category_id, category_name)
+    create_category(category.id, category.name)
     soup = BeautifulSoup(page.content, 'html.parser')
     page_count = int(soup.select('div.pagination > ul > li:nth-last-child(2)')[0].text)
     for i in range(page_count):
         params['p'] = i + 1
-        print("retrieving category: {} page {} of {}".format(category_name, i + 1, page_count))
-        parse_page(request_url, params, category_id)
+        print("retrieving category: {} page {} of {}".format(category.name, i + 1, page_count))
+        parse_page(request_url, params, category.id)
 
-
-if __name__ == "__main__":
-    get_category('/1596/smartfony.html', 1596, 'smartfony')
-    get_category('/5022/laptopy.html', 5022, 'laptopy')
-    get_category('/8923/tablety.html', 8923, 'tablety')
