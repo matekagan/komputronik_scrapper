@@ -10,7 +10,7 @@ def print_options():
     print("---- Komputronik Price Scrapper ----")
     print("parameters:")
     print("show                                 --- prints all possible categories to retrieve")
-    print("getcategory [category_name] ...      --- gathers data for selected categories")
+    print("check_category [category_name] ...   --- gathers data for selected categories")
 
 
 def main(args):
@@ -36,7 +36,7 @@ def handle_arguments(arguments):
     command = arguments[0].strip()
     if command == "show":
         show()
-    elif command == "getcategory" and len(arguments) > 1:
+    elif command == "check_category" and len(arguments) > 1:
         get_categories(arguments[1:])
 
 
