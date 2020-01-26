@@ -11,6 +11,7 @@ def print_options():
     print("parameters:")
     print("show                                 --- prints all possible categories to retrieve")
     print("check_category [category_name] ...   --- gathers data for selected categories")
+    print("parseall                             --- gathers data for all available categories")
 
 
 def main(args):
@@ -32,10 +33,17 @@ def get_categories(params):
             get_category(category)
 
 
+def get_all_categories():
+    for category in categories.values():
+        get_category(category)
+
+
 def handle_arguments(arguments):
     command = arguments[0].strip()
     if command == "show":
         show()
+    elif command == "parseall":
+        get_all_categories()
     elif command == "check_category" and len(arguments) > 1:
         get_categories(arguments[1:])
 
